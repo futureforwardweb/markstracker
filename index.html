@@ -826,7 +826,7 @@ input[type="number"]:focus { border-color: var(--accent, rgba(255,255,255,0.3));
 
   <header class="header">
     <div class="header-left">
-      <div class="kicker"><span class="kicker-line"></span>WACE 2026 · Perth WA</div>
+      <div class="kicker"><span class="kicker-line"></span>WACE 2025 · Perth WA</div>
       <h1>Marks <span>& Progress</span></h1>
     </div>
   </header>
@@ -909,13 +909,13 @@ let activeTab = SUBJECTS[0].key;
 function loadData() {
   try {
     const d = localStorage.getItem('wace_marks_v3');
-    if (d) { const p = JSON.parse(d); data = p.data||{}; targets = p.targets||{}; }
+    if (d) { const p = JSON.parse(d); data = p.data||{}; targets = p.targets||{}; atarOverrides = p.atarOverrides||{}; }
   } catch(e) {}
   SUBJECTS.forEach(s => { if(!data[s.key]) data[s.key]=[]; if(!targets[s.key]) targets[s.key]=80; });
 }
 
 function saveData() {
-  try { localStorage.setItem('wace_marks_v3', JSON.stringify({data,targets})); } catch(e){}
+  try { localStorage.setItem('wace_marks_v3', JSON.stringify({data,targets,atarOverrides})); } catch(e){}
 }
 
 function weightedAvg(entries) {
@@ -1362,6 +1362,7 @@ function setAtarOverride(key, val) {
   const v = parseFloat(val);
   atarOverrides[key] = (!isNaN(v) && v >= 0 && v <= 100) ? v : null;
   if (val === '') atarOverrides[key] = null;
+  saveData();
   refreshATAR();
 }
 
